@@ -1,24 +1,7 @@
-# README
+## Event Recorder
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This application contains the microservice that is responsible to update the events and campaign mappings in the database. You can think of this as a child application of `india-res-signup`. It uses a lot of the same models as the `india-res-signup` application with one key difference being that no migrations are run, but the schema is loaded directly from the schema.rb file
 
-Things you may want to cover:
+To run this application, download the source code and run the following
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# TODO

@@ -103,25 +103,6 @@ class User < ApplicationRecord
     super() || self.rch_profile&.name
   end
 
-  # this method checks if a user has fully signed up for the SDH program
-  def fully_signed_up_for_sdh?
-    self.program_id == NooraProgram.id_for(:sdh) &&
-      ((self.signed_up_to_whatsapp && self.whatsapp_number_confirmed) || self.signed_up_to_ivr) &&
-      self.user_condition_area_mappings.with_program_id(NooraProgram.id_for(:sdh)).present?
-  end
-
-  def gems_user?
-    self.program_id == NooraProgram.id_for(:gems)
-  end
-
-  def fully_signed_up_to_gems?
-    gems_user? and (self.signed_up_to_ivr || self.signed_up_to_whatsapp) and self.incoming_call_date.present?
-  end
-
-  def rch_id
-    self.rch_profile&.rch_id
-  end
-
 
   ######################## CONDITION AREA RELATED METHODS #############################
 

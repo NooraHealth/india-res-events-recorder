@@ -11,10 +11,13 @@ class UserEventType < ApplicationRecord
 
   def self.values
     [
-      :signup_attempt,
-      :change_language,
-      :change_condition_area,
-      :unsubscribe
+      :signup,
+      :update_language,
+      :update_condition_area,
+      :unsubscribe,
+      :acknowledge_edd,
+      :acknowledge_dob,
+      :change_campaign
     ]
   end
 end
