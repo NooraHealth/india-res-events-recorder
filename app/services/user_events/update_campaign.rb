@@ -71,7 +71,8 @@ module UserEvents
       user_textit_group_mapping = UserTextitGroupMapping.new(
         user_id: self.user.id,
         textit_group_id: self.textit_group.id,
-        event_timestamp: DateTime.now
+        event_timestamp: DateTime.now,
+        user_event_tracker_id: event.id
       )
       if user_textit_group_mapping.save
         self.errors = user_textit_group_mapping.errors.full_messages
