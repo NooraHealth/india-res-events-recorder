@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: health_alert_notifications
@@ -23,5 +21,7 @@
 #  fk_rails_...  (health_alert_id => health_alerts.id)
 #
 class HealthAlertNotification < ApplicationRecord
+  belongs_to :health_alert
+  belongs_to :user, polymorphic: true
 
 end

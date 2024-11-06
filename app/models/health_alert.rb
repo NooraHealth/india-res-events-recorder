@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: health_alerts
@@ -20,4 +18,5 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class HealthAlert < ApplicationRecord
+  belongs_to :user
 end
