@@ -9,5 +9,6 @@ Rails.application.routes.draw do
 
   post 'res/update_user_attribute', to: 'ccp_res/webhooks#update_user_attribute'
   post 'res/update_user_campaign', to: 'ccp_res/webhooks#update_user_campaign'
+  post 'res/health-alert/new/', to: 'alerts/create_alert#create_alert'
 
 end
