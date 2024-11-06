@@ -24,4 +24,5 @@ class HealthAlertNotification < ApplicationRecord
   belongs_to :health_alert
   belongs_to :user, polymorphic: true
 
+  has_many :responses, inverse_of: :health_alert_notification, class_name: "HealthAlertResponse"
 end
