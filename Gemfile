@@ -37,6 +37,7 @@ gem "bootsnap", require: false
 # gem "rack-cors"
 
 gem 'phonelib'
+gem 'dotenv-rails'
 
 
 group :development, :test do
@@ -50,3 +51,5 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
+
+gem "sidekiq", "~> 7.3"
