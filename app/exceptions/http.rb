@@ -8,20 +8,35 @@ class HttpError < StandardError
   end
 end
 
-class UserNotFound < HttpError
-  attr_reader :status
+class DuplicateResource < HttpError
+  def initialize(message = "Duplicate resource")
+    super(message, 409)
+  end
+end
 
+class UserNotFound < HttpError
   def initialize()
-    super("User not found")
-    @status = 404
+    super("User not found", 404)
+  end
+end
+
+class NotImplemented < HttpError
+  def initialize(message="Not implemented")
+    super(message, 500)
   end
 end
 
 class InvalidPhone < HttpError
-  attr_reader :status
-
   def initialize(message="Invalid phone")
-    super(message)
-    @status = 400
+    super(message, 400)
+  end
+end
+
+class MultipleErrors < HttpError
+  attr_reader :errors
+
+  def initialize(message, errors, status = 500)
+    super(message, status)
+    @errors = errors
   end
 end
