@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../../exceptions/http.rb'
 
 class Alerts::CreateAlertController < ApplicationController
   before_action :initiate_logger
@@ -12,59 +11,24 @@ class Alerts::CreateAlertController < ApplicationController
   end
 
   def create_alert
-    begin
-      phone, ticket_id, symptom, alert_identified_at = params.require(
-        [:phone, :ticket_id, :symptom, :alert_identified_at]
-      )
-    rescue ActionController::ParameterMissing => exception
-      self.logger.warn(exception.message)
-      return render json: {
-                      success: false,
-                      errors: [exception.message],
-                    },
-                    status: 400
-    end
+    phone, ticket_id, symptom, alert_identified_at = params.require(
+      [:phone, :ticket_id, :symptom, :alert_identified_at]
+    )
 
-    begin
-      creator = Alerts::CreateAlert.new(
-        self.logger,
-        phone,
-        ticket_id,
-        symptom,
-        alert_identified_at,
-      )
-      return render json: {
-                      success: true,
-                      data: creator.create_alert,
-                    },
-                    status: :created
+    creator = Alerts::CreateAlert.new(
+      self.logger,
+      phone,
+      ticket_id,
+      symptom,
+      alert_identified_at,
+    )
 
+    return render json: {
+                    success: true,
+                    data: creator.create_alert,
+                  },
+                  status: :created
 
-    rescue ActiveRecord::RecordInvalid => exception
-      self.logger.warn(exception.record.errors.full_messages)
-      return render json: {
-                      success: false,
-                      errors: exception.record.errors.full_messages,
-                    },
-                    status: :unprocessable_entity
-
-    rescue MultipleErrors => exception
-      self.logger.warn("#{exception.status}: #{exception.errors}")
-      return render json: {
-                      success: false,
-                      message: exception.message,
-                      errors: [exception.errors],
-                    },
-                    status: exception.status
-
-    rescue HttpError => exception
-      self.logger.warn("#{exception.status}: #{exception.message}")
-      return render json: {
-                      success: false,
-                      errors: [exception.message]
-                    },
-                    status: exception.status
-    end
 
   end
 end

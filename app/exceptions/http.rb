@@ -14,6 +14,12 @@ class DuplicateResource < HttpError
   end
 end
 
+class RecordNotFound < HttpError
+  def initialize(message = "Resource not found")
+    super(message, 404)
+  end
+end
+
 class UserNotFound < HttpError
   def initialize()
     super("User not found", 404)
