@@ -57,6 +57,8 @@
 #  fk_rails_...  (program_id => noora_programs.id)
 #  fk_rails_...  (state_id => states.id)
 #
+require_relative '../exceptions/http.rb'
+
 class User < ApplicationRecord
 
   validates :mobile_number, presence: true, uniqueness: true
@@ -78,6 +80,22 @@ class User < ApplicationRecord
 
   has_one :rch_profile, dependent: :destroy
   has_one :tb_profile, dependent: :destroy
+
+
+  def self.find_by_phone(phone)
+
+    phone = Phonelib.parse(phone, :in)
+    if phone.country_code != "91"
+      raise InvalidPhone.new "Not an indian phone (code=#{phone.country_code})"
+    end
+
+    user = User.find_by(mobile_number: "0" + phone.e164[3..])
+    if user.nil?
+      raise UserNotFound.new
+    end
+
+    return user
+  end
 
   # after_save :update_whatsapp_id TODO - better way to do this
 
