@@ -13,7 +13,7 @@
 #   ]
 # }
 
-require_relative '../../exceptions/http.rb'
+require_relative '../../../lib/utils.rb'
 
 class Alerts::CreateAlert < MessageEvents::Base
 
@@ -21,7 +21,7 @@ class Alerts::CreateAlert < MessageEvents::Base
     super(logger)
     @user = User.find_by_phone(phone)
     @ticket_id = ticket_id
-    @alert_identified_at = alert_identified_at
+    @alert_identified_at = parse_timestamp(alert_identified_at)
     @symptom = symptom
   end
 
