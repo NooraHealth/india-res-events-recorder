@@ -4,18 +4,19 @@
 #
 # Table name: health_alert_notifications
 #
-#  id                 :bigint           not null, primary key
-#  event_timestamp    :datetime
-#  received_user_type :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  health_alert_id    :bigint           not null
-#  received_user_id   :bigint
+#  id              :bigint           not null, primary key
+#  event_timestamp :datetime
+#  platform        :string
+#  user_type       :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  health_alert_id :bigint           not null
+#  user_id         :bigint
 #
 # Indexes
 #
 #  index_health_alert_notifications_on_health_alert_id  (health_alert_id)
-#  index_health_alert_notifications_on_received_user    (received_user_type,received_user_id)
+#  index_health_alert_notifications_on_received_user    (user_type,user_id)
 #
 # Foreign Keys
 #

@@ -6,7 +6,7 @@
 #
 #  id                  :bigint           not null, primary key
 #  alert_identified_at :datetime
-#  warning_sign        :text
+#  symptom             :text
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  user_id             :bigint           not null
