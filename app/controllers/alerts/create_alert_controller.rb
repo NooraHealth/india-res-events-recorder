@@ -2,13 +2,6 @@
 
 
 class Alerts::CreateAlertController < ApplicationController
-  before_action :initiate_logger
-
-  def initiate_logger
-    self.logger = Logger.new("#{Rails.root}/log/alerts/#{action_name}.log")
-    self.logger.info("-------------------------------------")
-    logger.info("API parameters are: #{params.permit!}")
-  end
 
   def create_alert
     phone, ticket_id, symptom, alert_identified_at = params.require(

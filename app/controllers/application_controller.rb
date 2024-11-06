@@ -4,12 +4,20 @@ class ApplicationController < ActionController::API
 
   attr_accessor :logger
 
+  before_action :initiate_logger
+
   rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
   rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
   rescue_from ActionController::RoutingError, with: :handle_routing_error
   rescue_from ActionController::ParameterMissing, with: :handle_invalid_parameter
   rescue_from HttpError, with: :handle_http_error
   rescue_from MultipleErrors, with: :handle_multiple_errors
+
+  def initiate_logger
+    self.logger = Logger.new("#{Rails.root}/log/alerts/#{action_name}.log")
+    self.logger.info("-------------------------------------")
+    logger.info("API parameters are: #{params.permit!}")
+  end
 
   def handle_multiple_errors(exception)
     self.logger.warn("#{exception.status}: #{exception.errors}")
