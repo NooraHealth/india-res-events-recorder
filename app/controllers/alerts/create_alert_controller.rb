@@ -19,14 +19,14 @@ class Alerts::CreateAlertController < ApplicationController
     rescue ActionController::ParameterMissing => exception
       self.logger.warn(exception.message)
       return render json: {
-               success: false,
-               errors: [exception.message],
-             },
-             status: 400
+                      success: false,
+                      errors: [exception.message],
+                    },
+                    status: 400
     end
 
     begin
-      op = Alerts::CreateAlert.(
+      creator = Alerts::CreateAlert.new(
         self.logger,
         phone,
         ticket_id,
@@ -34,29 +34,36 @@ class Alerts::CreateAlertController < ApplicationController
         alert_identified_at,
       )
       return render json: {
-               success: true,
-               data: {
-                 # TODO: add data
-               }
-             },
-             status: :created
+                      success: true,
+                      data: creator.create_alert,
+                    },
+                    status: :created
 
 
     rescue ActiveRecord::RecordInvalid => exception
       self.logger.warn(exception.record.errors.full_messages)
       return render json: {
-               success: false,
-               errors: exception.record.errors.full_messages,
-             },
-             status: :unprocessable_entity
+                      success: false,
+                      errors: exception.record.errors.full_messages,
+                    },
+                    status: :unprocessable_entity
+
+    rescue MultipleErrors => exception
+      self.logger.warn("#{exception.status}: #{exception.errors}")
+      return render json: {
+                      success: false,
+                      message: exception.message,
+                      errors: [exception.errors],
+                    },
+                    status: exception.status
 
     rescue HttpError => exception
       self.logger.warn("#{exception.status}: #{exception.message}")
       return render json: {
-               success: false,
-               errors: [exception.message]
-             },
-             status: exception.status
+                      success: false,
+                      errors: [exception.message]
+                    },
+                    status: exception.status
     end
 
   end
