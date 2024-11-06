@@ -43,7 +43,7 @@ class Alerts::CreateAlertController < ApplicationController
 
 
     rescue ActiveRecord::RecordInvalid => exception
-      self.logger.warn("Failed")
+      self.logger.warn(exception.record.errors.full_messages)
       return render json: {
                success: false,
                errors: exception.record.errors.full_messages,
@@ -51,7 +51,7 @@ class Alerts::CreateAlertController < ApplicationController
              status: :unprocessable_entity
 
     rescue HttpError => exception
-      self.logger.warn("Failed")
+      self.logger.warn("#{exception.status}: #{exception.message}")
       return render json: {
                success: false,
                errors: [exception.message]
