@@ -11,6 +11,6 @@ Rails.application.routes.draw do
   post 'res/update_user_campaign', to: 'ccp_res/webhooks#update_user_campaign'
 
   post 'res/health-alert/new/', to: 'alerts/create_alert#create_alert'
-  post 'res/health-alert/patient/list/', to: 'alerts/hcw_list_alerted_users#hcw_list_alerted_users'
+  get 'res/health-alert/patient/list/', to: 'alerts/hcw_list_alerted_users#hcw_list_alerted_users'
 
 end
