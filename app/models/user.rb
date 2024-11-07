@@ -97,6 +97,18 @@ class User < ApplicationRecord
     return user
   end
 
+  def is_high_risk
+    # TODO: check state, district and if they are high risk or not
+    # Currently 2 districts in state = AP
+    return true
+  end
+
+  def has_to_be_high_risk
+    unless self.is_high_risk
+      raise Forbidden("High risk conditions not met")
+    end
+  end
+
   # after_save :update_whatsapp_id TODO - better way to do this
 
   # if the field `whatsapp_mobile_number` exists return that, else return mobile number

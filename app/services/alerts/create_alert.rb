@@ -24,8 +24,10 @@ module Alerts
 
     def initialize(logger, phone, ticket_id, symptom, alert_identified_at)
       super(logger)
+
       @user = User.find_by_phone(phone)
-      # TODO: add check for specific state and districts
+      @user.has_to_be_high_risk
+
       @ticket_id = ticket_id
       @alert_identified_at = parse_timestamp(alert_identified_at)
       @symptom = symptom
