@@ -28,20 +28,22 @@ class Nhub::Nhub < MessageEvents::Base
     @http.use_ssl = true if uri.scheme == 'https'
   end
 
-  def update_user_attribute(phone, attribute, value, update_back = true, client_timestamp = nil, converter = "default")
+  def update_user_attribute(phone: , attribute: , value: , update_back: true, client_timestamp: nil, converter: "default")
     url = self.get_update_url(phone)
-    data, response = self.get_http_response(
-      url,
-      {
-        meta_field: attribute,
-        field_value: value,
-        update_back: update_back,
-        timestamp: client_timestamp or Time.now.utc,
-        converter: converter,
-      }
-    )
-    is_success = data and data["status"] == "queued"
-    return is_success, data, response
+    request_data = {
+      meta_field: attribute,
+      field_value: value,
+      update_back: update_back,
+      timestamp: (client_timestamp or Time.now.utc),
+      converter: converter,
+    }
+    data, response = self.get_http_response(url, request_data)
+
+    unless data and data["status"] == "queued"
+      self.logger.error("Nhub update failed: url=#{url} data=#{request_data} http_status=#{response.code} http_body=#{response.body}")
+    end
+
+    return data, response
   end
 
   def get_update_url(phone)
