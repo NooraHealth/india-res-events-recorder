@@ -109,7 +109,7 @@ class User < ApplicationRecord
       [
         "Kolar",
         "Nellore",
-      ].include? self.rch_profile.district
+      ].include? self.rch_profile&.district
     )
   end
 
