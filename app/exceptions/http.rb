@@ -26,6 +26,12 @@ class UserNotFound < HttpError
   end
 end
 
+class Forbidden < HttpError
+  def initialize(message = "Forbidden resource")
+    super(message, 403)
+  end
+end
+
 class NotImplemented < HttpError
   def initialize(message="Not implemented")
     super(message, 500)
