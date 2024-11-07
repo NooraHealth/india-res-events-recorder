@@ -39,8 +39,12 @@ class Nhub::Nhub < MessageEvents::Base
     }
     data, response = self.get_http_response(Net::HTTP::Patch, url, request_data)
 
-    unless data and data["status"] == "queued"
-      self.logger.error("Nhub update failed: url=#{url} data=#{request_data} http_status=#{response.code} http_body=#{response.body}")
+    message = "url=#{url} data=#{request_data} http_status=#{response.code} http_body=#{response.body}"
+
+    if data and data["status"] == "queued"
+      self.logger.error("Nhub update queued: " + message)
+    else
+      self.logger.error("Nhub update failed: " + message)
     end
 
     return data, response
