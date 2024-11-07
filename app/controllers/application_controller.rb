@@ -23,8 +23,7 @@ class ApplicationController < ActionController::API
     self.logger.warn("#{exception.status}: #{exception.errors}")
     return render json: {
                     success: false,
-                    message: exception.message,
-                    errors: exception.errors,
+                    errors: [exception.message] + exception.errors,
                   },
                   status: exception.status
   end
