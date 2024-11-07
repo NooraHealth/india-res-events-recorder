@@ -106,7 +106,10 @@ class User < ApplicationRecord
     return (
       self.is_high_risk and
       self.state&.name == "Andhra Pradesh" and
-      [].include? self.rch_profile.district # TODO: add the districts
+      [
+        "Kolar",
+        "Nellore",
+      ].include? self.rch_profile.district
     )
   end
 
