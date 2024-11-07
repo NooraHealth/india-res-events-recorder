@@ -71,7 +71,10 @@ module Alerts
           .order("health_alerts.created_at ASC")
           .pluck(:name)
 
-      return names.each_with_index.map { |item, index| "#{index + 1}. #{item}" }
+      return {
+               hcw_type: @hcw_user.class.name,
+               patient_names: names.each_with_index.map { |item, index| "#{index + 1}. #{item}" },
+             }
 
     end
 
