@@ -37,7 +37,7 @@ class Nhub::Nhub < MessageEvents::Base
       timestamp: (client_timestamp or Time.now.utc),
       converter: converter,
     }
-    data, response = self.get_http_response(url, request_data)
+    data, response = self.get_http_response(Net::HTTP::Patch, url, request_data)
 
     unless data and data["status"] == "queued"
       self.logger.error("Nhub update failed: url=#{url} data=#{request_data} http_status=#{response.code} http_body=#{response.body}")
@@ -50,8 +50,8 @@ class Nhub::Nhub < MessageEvents::Base
     return @base_url + "/user/" + phone + "/update"
   end
 
-  def get_http_response(url, data)
-    request = Net::HTTP::Patch.new(
+  def get_http_response(method, url, data)
+    request = method.new(
       url,
       {
         'Content-Type' => 'application/json',
