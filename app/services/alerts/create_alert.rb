@@ -26,7 +26,9 @@ module Alerts
       super(logger)
 
       @user = User.find_by_phone(phone)
-      @user.has_to_be_high_risk
+      unless @user.can_create_alert
+        raise Forbidden.new("User doesn't qualify for alert creation")
+      end
 
       @ticket_id = ticket_id
       @alert_identified_at = parse_timestamp(alert_identified_at)

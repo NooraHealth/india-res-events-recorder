@@ -98,15 +98,16 @@ class User < ApplicationRecord
   end
 
   def is_high_risk
-    # TODO: check state, district and if they are high risk or not
-    # Currently 2 districts in state = AP
+    # TODO: check high risk column in rch_profiles
     return true
   end
 
-  def has_to_be_high_risk
-    unless self.is_high_risk
-      raise Forbidden("High risk conditions not met")
-    end
+  def can_create_alert
+    return (
+      self.is_high_risk and
+      self.state&.name == "Andhra Pradesh" and
+      [].include? self.rch_profile.district # TODO: add the districts
+    )
   end
 
   # after_save :update_whatsapp_id TODO - better way to do this
