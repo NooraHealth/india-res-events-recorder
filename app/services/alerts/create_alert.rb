@@ -16,56 +16,76 @@
 require_relative '../../../lib/utils.rb'
 require_relative '../../exceptions/http.rb'
 
-class Alerts::CreateAlert < MessageEvents::Base
+module Alerts
 
-  def initialize(logger, phone, ticket_id, symptom, alert_identified_at)
-    super(logger)
-    @user = User.find_by_phone(phone)
-    # TODO: add check for specific state and districts
-    @ticket_id = ticket_id
-    @alert_identified_at = parse_timestamp(alert_identified_at)
-    @symptom = symptom
-  end
+  FIVE_DAYS = 5 * 24 * 60 * 60
 
-  def create_alert
-    alert = HealthAlert
-              .left_outer_joins(notifications: :responses)
-              .where(
-                responses: { id: nil },
-                ticket_id: @ticket_id,
-                user_id: @user.id,
-              )
-              .order(created_at: :desc)
-              .first
+  class CreateAlert < MessageEvents::Base
 
-    if alert.nil?
-      # TODO: update alert_identified_at, alert_id everywhere for users
-      # Send HR message
-      alert = HealthAlert.new(
+    def initialize(logger, phone, ticket_id, symptom, alert_identified_at)
+      super(logger)
+      @user = User.find_by_phone(phone)
+      # TODO: add check for specific state and districts
+      @ticket_id = ticket_id
+      @alert_identified_at = parse_timestamp(alert_identified_at)
+      @symptom = symptom
+      @nhub = Nhub::Nhub.new(self.logger, ENV["NHUB_URL"], ENV["NHUB_API_KEY"])
+    end
+
+    def create_alert
+      alert = HealthAlert
+                .left_outer_joins(notifications: :responses)
+                .where(
+                  responses: { id: nil },
+                  user_id: @user.id,
+                )
+                .order(created_at: :desc)
+                .first
+
+      # TODO: create notification
+      if not alert.nil? and alert.ticket_id == @ticket_id
+        if alert.symptom == @symptom
+          raise DuplicateResource.new("HealthAlert already exists")
+        else
+          raise DuplicateResource.new("HealthAlert already exists with different symptom")
+        end
+      end
+
+      new_alert = HealthAlert.new(
         user_id: @user.id,
         ticket_id: @ticket_id,
         symptom: @symptom,
         alert_identified_at: @alert_identified_at,
       )
-      unless alert.save
+      unless new_alert.save
         raise MultipleErrors("Unable to create object", alert.errors.full_messages)
       end
-      status = "created a new HealthAlert"
 
-    else
-      # TODO: update alert_id if > 5days
-      if alert.symptom == @symptom
-        raise DuplicateResource.new("HealthAlert already exists")
-      else
-        raise DuplicateResource.new("HealthAlert already exists with different symptom")
+      # Send the most recent alert_id to all other platforms
+      @nhub.update_user_attribute(
+        phone: @user.mobile_number,
+        attribute: "alert_id",
+        value: new_alert.id,
+      )
+
+      if alert.nil? or (alert.ticket_id != @ticket_id and alert.alert_identified_at < Time.now - FIVE_DAYS)
+        # textit campaign starts only when alert_identified_at is set
+        # TODO: asha, anm (not mo) follow up campaign should start from most recent alert
+        @nhub.update_user_attribute(
+          phone: @user.mobile_number,
+          attribute: "alert_identified_at",
+          value: @alert_identified_at,
+        )
       end
 
-    end
+      # TODO: add MO notification but no follow up
+      # TODO: Send HR message to patient, asha, anm, mo
 
-    return {
-             status: status,
-             alert_id: alert.id,
-             symptom: alert.symptom,
-           }
+      return {
+               status: "created a new HealthAlert",
+               alert_id: new_alert.id,
+               symptom: new_alert.symptom,
+             }
+    end
   end
 end
