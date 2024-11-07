@@ -72,6 +72,8 @@ class User < ApplicationRecord
   belongs_to :onboarding_method, optional: true
   belongs_to :reference_user, class_name: "User", optional: true
 
+  has_many :health_alerts, inverse_of: :user, class_name: "HealthAlert"
+
   has_many :user_event_trackers, dependent: :destroy
 
   has_many :user_condition_area_mappings, dependent: :destroy

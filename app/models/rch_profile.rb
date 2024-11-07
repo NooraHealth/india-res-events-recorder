@@ -46,6 +46,8 @@
 #
 class RchProfile < ApplicationRecord
   belongs_to :user
+  belongs_to :asha_user
+  belongs_to :anm_user
 
   validates :rch_id, presence: true, uniqueness: true
 end
