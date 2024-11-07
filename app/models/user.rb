@@ -58,6 +58,7 @@
 #  fk_rails_...  (state_id => states.id)
 #
 require_relative '../exceptions/http.rb'
+require_relative '../../lib/utils.rb'
 
 class User < ApplicationRecord
 
@@ -81,20 +82,8 @@ class User < ApplicationRecord
   has_one :rch_profile, dependent: :destroy
   has_one :tb_profile, dependent: :destroy
 
-
   def self.find_by_phone(phone)
-
-    phone = Phonelib.parse(phone, :in)
-    if phone.country_code != "91"
-      raise InvalidPhone.new "Not an indian phone (code=#{phone.country_code})"
-    end
-
-    user = User.find_by(mobile_number: "0" + phone.e164[3..])
-    if user.nil?
-      raise UserNotFound.new
-    end
-
-    return user
+    return find_user_by_phone(User, phone, :in)
   end
 
   def is_high_risk
