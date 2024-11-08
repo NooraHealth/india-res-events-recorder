@@ -11,15 +11,19 @@ end
 
 
 def find_user_by_phone(userClass, phone, region = "in")
-    phone = Phonelib.parse(phone, :in)
-    if phone.country_code != "91"
-      raise InvalidPhone.new "Not an indian phone (code=#{phone.country_code})"
-    end
+  phone = Phonelib.parse(phone, region)
+  if (
+    phone.country_code != "91" or
+    phone.national_number.length != 10 or
+    phone.national_number.starts_with? "0"
+  )
+    raise InvalidPhone.new "Not a valid indian phone (#{phone.e164})"
+  end
 
-    user = userClass.find_by(mobile_number: "0" + phone.e164[3..])
-    if user.nil?
-      raise UserNotFound.new
-    end
+  user = userClass.find_by(mobile_number: "0" + phone.e164[3..])
+  if user.nil?
+    raise UserNotFound.new
+  end
 
-    return user
+  return user
 end
