@@ -49,12 +49,13 @@
 module TurnApi
   class SendAlertMessage < TurnApi::Base
 
-    attr_accessor :user_id, :user, :template_name
+    attr_accessor :user_id, :user, :template_name, :placeholder_values
 
     def initialize(logger, params)
       super(logger)
       self.user_id = params[:user_id]
       self.template_name = params[:template_name]
+      self.placeholder_values = params[:placeholder_values]
     end
 
     def call
@@ -73,7 +74,6 @@ module TurnApi
         self.errors << "Template name cannot be blank"
         return self
       end
-
 
       # now send the message to the user by calling the API
       execute_api_call
@@ -129,8 +129,25 @@ module TurnApi
                 "policy":"deterministic",
                 "code": self.user.language.two_letter_code
               }
+          },
+        "components": [
+          {
+            "type": "body",
+            "parameters": format_parameters(self.placeholder_values)
           }
+        ]
       }
+    end
+
+    def format_parameters(placeholder_values)
+      parameters_request_format = []
+      placeholder_values.keys.each do |key|
+        parameters_request_format << {
+          "type": "text",
+          text: placeholder_values[key]
+        }
+      end
+      parameters_request_format
     end
 
   end

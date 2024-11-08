@@ -82,9 +82,18 @@ module Alerts
                                   event_timestamp: DateTime.now)
       end
 
+      # first set the placeholder values for the alert
+      # Name, RCH ID, LMP and actual symptom
+      placeholder_values = {
+        name: @user.name,
+        rch_id: @user.rch_profile.rch_id,
+        lmp: @user.last_mentsrual_period,
+        symptom: @symptom
+      }
+
       # send message to ASHA. First retrieve respective ASHA and ANM objects
       @asha = @user.rch_profile.asha
-      op = TurnApi::SendAlertMessage.(user_id: @asha.id, template_name: templates[:asha_alert])
+      op = TurnApi::SendAlertMessage.(user_id: @asha.id, template_name: templates[:asha_alert], placeholder_values: placeholder_values)
       if op.errors.present?
         self.errors << "Could not send message to ASHA: #{op.errors}"
       else
@@ -95,7 +104,7 @@ module Alerts
       end
 
       @anm = @user.rch_profiles.anm
-      op = TurnApi::SendAlertMessage.(user_id: @anm.id, template_name: templates[:anm_alert])
+      op = TurnApi::SendAlertMessage.(user_id: @anm.id, template_name: templates[:anm_alert], placeholder_values: placeholder_values)
       if op.errors.present?
         self.errors << "Could not send message to HRPW: #{op.errors}"
       else
