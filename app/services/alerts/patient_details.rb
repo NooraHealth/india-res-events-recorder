@@ -50,6 +50,7 @@ class Alerts::PatientDetails < MessageEvents::Base
              name: @user.name,
              lmp: @user.last_menstrual_period || "",
              warning_sign: last_notification_user.health_alert.symptom,
+             rch_id: @user.rch_profile.rch_id || "",
            }
   end
 
