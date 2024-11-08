@@ -104,6 +104,18 @@ class User < ApplicationRecord
     )
   end
 
+  def get_most_recent_health_alert_notification
+    return HealthAlertNotification
+             .joins(health_alert: :user)
+             .where(
+               health_alert: {user_id: self.id},
+               user_id: self.id,
+               user_type: HealthAlertNotification::PATIENT_TYPE,
+             )
+             .order(created_at: :desc)
+             .first
+  end
+
   # after_save :update_whatsapp_id TODO - better way to do this
 
   # if the field `whatsapp_mobile_number` exists return that, else return mobile number

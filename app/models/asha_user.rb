@@ -43,4 +43,16 @@ class AshaUser < ApplicationRecord
     end
   end
 
+  def get_most_recent_health_alert_notification(patient_id)
+    return HealthAlertNotification
+             .joins(health_alert: :user)
+             .where(
+               health_alert: {user_id: patient_id},
+               user_id: self.id,
+               user_type: HealthAlertNotification::ASHA_TYPE
+             )
+             .order(created_at: :desc)
+             .first
+  end
+
 end
