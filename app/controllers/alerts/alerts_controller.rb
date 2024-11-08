@@ -43,16 +43,16 @@ module Alerts
 
     # this action confirms care from a patient
     def patient_confirm_care
-      responder = Alerts::HcwPatientCare.new(
+      responder = Alerts::PatientConfirmCare.new(
         self.logger,
         *params.require(
-          [:hcw_type, :phone, :patient_phone, :platform,]
+          [:phone, :platform,]
         )
       )
 
       return render json: {
         success: true,
-        data: responder.call,
+        data: responder.confirm,
       },
                     status: 200
     end
