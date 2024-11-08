@@ -19,6 +19,7 @@
 #
 class HealthAlert < ApplicationRecord
   belongs_to :user
+
   # TODO: add orange and red types
   has_many :notifications, inverse_of: :health_alert, class_name: "HealthAlertNotification"
   # has_many :responses, inverse_of: :health_alert, class_name: "HealthAlertResponse"

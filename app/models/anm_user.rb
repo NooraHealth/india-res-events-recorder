@@ -30,7 +30,8 @@ class AnmUser < ApplicationRecord
 
   belongs_to :district
 
-  has_many :rch_profiles, dependent: :destroy
+  has_many :rch_profiles
+  has_many :health_alert_notifications, as: :user
 
   def self.find_by_phone(phone)
     return find_user_by_phone(AnmUser, phone, :in)

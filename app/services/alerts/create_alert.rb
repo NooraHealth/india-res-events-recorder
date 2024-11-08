@@ -36,7 +36,7 @@ module Alerts
       @nhub = Nhub::Nhub.new(self.logger, ENV["NHUB_URL"], ENV["NHUB_API_KEY"])
     end
 
-    def create_alert
+    def call
       alert = HealthAlert
                 .left_outer_joins(notifications: :responses)
                 .where(
@@ -82,8 +82,41 @@ module Alerts
         )
       end
 
-      # TODO: add MO notification but no follow up
-      # TODO: Send HR message to patient, asha, anm, mo
+      # start sending messages to all stakeholders
+      templates = YAML.load(File.read("config/turn_api_config.yml"))
+      # send message to HRPW
+      op = TurnApi::SendAlertMessage.(user_id: @user.id, template_name: templates[:hrpw_alert])
+      if op.errors.present?
+        self.errors << "Could not send message to HRPW: #{op.errors}"
+      else
+        # add healthalert notification object
+        alert.notifications.build(user: @user,
+                                  platform: "whatsapp",
+                                  event_timestamp: DateTime.now)
+      end
+
+      # send message to ASHA. First retrieve respective ASHA and ANM objects
+      @asha = @user.rch_profile.asha
+      op = TurnApi::SendAlertMessage.(user_id: @asha.id, template_name: templates[:asha_alert])
+      if op.errors.present?
+        self.errors << "Could not send message to ASHA: #{op.errors}"
+      else
+        # add healthalert notification object
+        alert.notifications.build(user: @asha,
+                                  platform: "whatsapp",
+                                  event_timestamp: DateTime.now)
+      end
+
+      @anm = @user.rch_profiles.anm
+      op = TurnApi::SendAlertMessage.(user_id: @anm.id, template_name: templates[:anm_alert])
+      if op.errors.present?
+        self.errors << "Could not send message to HRPW: #{op.errors}"
+      else
+        # add healthalert notification object
+        alert.notifications.build(user: @anm,
+                                  platform: "whatsapp",
+                                  event_timestamp: DateTime.now)
+      end
 
       return {
                status: "created a new HealthAlert",
@@ -92,4 +125,10 @@ module Alerts
              }
     end
   end
+
+
+  private
+
+
+
 end

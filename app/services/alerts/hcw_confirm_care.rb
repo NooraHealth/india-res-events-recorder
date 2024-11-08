@@ -2,7 +2,7 @@ require_relative '../../../lib/utils.rb'
 require_relative '../../exceptions/http.rb'
 
 module Alerts
-  class HcwPatientCare < MessageEvents::Base
+  class HcwConfirmCare < MessageEvents::Base
 
     def initialize(logger, hcw_type, phone, patient_phone)
 
