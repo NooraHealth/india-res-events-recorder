@@ -23,7 +23,7 @@ module Alerts
       @nhub = Nhub::Nhub.new(self.logger, ENV["NHUB_URL"], ENV["NHUB_API_KEY"])
     end
 
-    def call
+    def create_alert
       alert = HealthAlert
                 .left_outer_joins(notifications: :responses)
                 .where(
