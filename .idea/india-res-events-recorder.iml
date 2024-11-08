@@ -85,7 +85,7 @@
     <orderEntry type="library" scope="PROVIDED" name="pg (v1.5.9, rbenv: 3.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="phonelib (v0.9.3, rbenv: 3.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="psych (v5.2.0, rbenv: 3.0.6) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="puma (v5.6.9, rbenv: 3.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="puma (v4.3.12, rbenv: 3.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="racc (v1.8.1, rbenv: 3.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rack (v2.2.10, rbenv: 3.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rack-test (v2.1.0, rbenv: 3.0.6) [gem]" level="application" />
