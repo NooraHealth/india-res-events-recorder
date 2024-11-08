@@ -36,17 +36,11 @@ class AshaUser < ApplicationRecord
     return find_user_by_phone(AshaUser, phone, :in)
   end
 
-  def can_see_patient_alerts
+  def get_patient_profiles
     district = self.district.name
-    for profile in self.rch_profiles.includes(user: :state)
-      user = profile.user
-      if user.can_create_alert and profile.district == district
-        # TODO: This can be improved if there is a can_create_alert boolean set
-        # on the user table which we can query to check this condition
-        return true
-      end
+    self.rch_profiles.includes(user: :state).select do |profile|
+      profile.user.can_create_alert and profile.district == district
     end
-    return false
   end
 
 end
