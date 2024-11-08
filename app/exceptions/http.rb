@@ -32,6 +32,12 @@ class Forbidden < HttpError
   end
 end
 
+class UnprocessableEntity < HttpError
+  def initialize(message="Unprocessable entity")
+    super(message, 422)
+  end
+end
+
 class NotImplemented < HttpError
   def initialize(message="Not implemented")
     super(message, 500)

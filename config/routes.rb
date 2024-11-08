@@ -55,7 +55,7 @@ Rails.application.routes.draw do
   post 'res/high_risk_pregnancy/hrp/alert', to: 'alerts/alerts#create'
 
   get 'res/high_risk_pregnancy/patient/list/', to: 'alerts/alerts#hcw_active_alerts'
-  get 'res/high_risk_pregnancy/patient/details/', to: 'alerts/hcw_list_alerted_users#hcw_list_alerted_users'
+  get 'res/high_risk_pregnancy/patient/details/', to: 'alerts/alerts#patient_details'
 
   get 'res/health-alert/patient/list/', to: 'alerts/alerts#hcw_active_alerts'
   get 'res/health-alert/patient/details/', to: 'alerts/alerts#patient_details'

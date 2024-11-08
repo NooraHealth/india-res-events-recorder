@@ -76,10 +76,13 @@ module Alerts
             rch_profile: hcw_filter,
           )
           .order("health_alerts.created_at ASC")
-          .map { |x| x.name } # NOTE: pluck picks 2 values for some reason
+          .map { |x| {name: x.name, phone: x.mobile_number} } # NOTE: pluck picks 2 values for some reason
 
       value[:patient_names] = names.each_with_index.map do |item, index|
-        "#{index + 1}. #{item}"
+        {
+          name: "#{index + 1}. #{item[:name]}",
+          phone: item[:phone],
+        }
       end
 
       return value
