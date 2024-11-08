@@ -11,6 +11,14 @@ Rails.application.routes.draw do
   post 'res/update_user_campaign', to: 'ccp_res/webhooks#update_user_campaign'
 
   post 'res/health-alert/new/', to: 'alerts/create_alert#create_alert'
+
   get 'res/health-alert/patient/list/', to: 'alerts/hcw_list_alerted_users#hcw_list_alerted_users'
+  get 'res/health-alert/patient/details/', to: 'alerts/hcw_list_alerted_users#hcw_list_alerted_users'
+
+  post 'res/health-alert/hcw/patient/confirm-care/', to: 'alerts/hcw_patient_care#confirm'
+  post 'res/health-alert/hcw/patient/deny-care/', to: 'alerts/hcw_patient_care#deny'
+
+  post 'res/health-alert/patient/confirm-care/', to: 'alerts/patient_care#confirm'
+  post 'res/health-alert/patient/deny-care/', to: 'alerts/patient_care#deny'
 
 end
