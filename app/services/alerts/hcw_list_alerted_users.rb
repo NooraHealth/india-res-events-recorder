@@ -25,22 +25,6 @@ module Alerts
 
 
     def list_alerted_users
-      # sql = <<-SQL
-      #   SELECT
-      #     u.*,
-      #     p.*,
-      #     s.*
-      #   FROM
-      #     users AS u
-      #       INNER JOIN states as s                      ON u.state_id = s.id
-      #       INNER JOIN rch_profiles AS p                ON p.user_id = u.id
-      #       LEFT JOIN health_alerts as ha               ON ha.user_id = u.id
-      #       LEFT JOIN health_alert_notifications as han ON han.health_alert_id = ha.id
-      #       LEFT JOIN health_alert_responses as has     ON has.health_alert_notification_id = han.id
-      #   WHERE
-      #     p.#{column} = #{@hcw_user.id}
-      # SQL
-      # users = User.find_by_sql([sql])
 
       if @hcw_user.class.name == "AnmUser"
         hcw_filter = {anm_user_id: @hcw_user.id}
