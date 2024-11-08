@@ -38,9 +38,15 @@ class NotImplemented < HttpError
   end
 end
 
-class InvalidPhone < HttpError
-  def initialize(message="Invalid phone")
+class BadRequest < HttpError
+  def initialize(message="Bad request")
     super(message, 400)
+  end
+end
+
+class InvalidPhone < BadRequest
+  def initialize(message="Invalid phone")
+    super(message)
   end
 end
 
