@@ -46,7 +46,7 @@ group :development, :test do
   gem "annotaterb"
   gem 'byebug'
 
-  gem "capistrano", require: false
+  gem "capistrano", "~> 3.14", require: false
   gem 'capistrano3-puma'
   gem 'capistrano-rails', require: false
   gem 'capistrano-bundler', require: false
