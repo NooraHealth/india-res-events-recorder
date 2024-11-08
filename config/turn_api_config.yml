@@ -1,0 +1,7 @@
+base_url: "https://whatsapp.turn.io/v1/"
+token: "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJUdXJuIiwiZXhwIjoxNzk3NDk3MDk1LCJpYXQiOjE3MjkwNjgzMjIsImlzcyI6IlR1cm4iLCJqdGkiOiI1Y2U3NWUxMS1lYzA3LTRmNjYtODdjNC02ZDI5YjNhMzBkY2YiLCJuYmYiOjE3MjkwNjgzMjEsInN1YiI6Im51bWJlcjozOTAzIiwidHlwIjoiYWNjZXNzIn0.tDpZ2pA_MQmG5ZznbM_bZ-BeAIXxpw9rSeJ88nyUxJfwB40Pd8JN0uRtytlFviirrk5M759meqHNcxCQwTd_dg"
+namespace: "aded279f_2f5e_465e_b17a_2bfddd9af272"
+templates:
+  asha_alert: ""
+  anm_alert: ""
+  hrpw_alert: ""

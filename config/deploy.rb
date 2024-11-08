@@ -10,15 +10,16 @@ set :application, "india-res-events-recorder"
 # end
 
 set :repo_url, "git@github.com-india-res-events:NooraHealth/india-res-events-recorder.git"
+# set :repo_url, "git@github.com:NooraHealth/india-res-events-recorder.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-set :branch, ENV['REFERENCE'] || ENV['BRANCH'] || :master
+set :branch, ENV['REFERENCE'] || ENV['BRANCH'] || :main
 
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/home/sreeramramasubramanian/india-res-events-recorder"
 
-set :linked_files, %w(config/database.yml config/master.key config/textit_config.yml config/turn_api_config.yml)
+set :linked_files, %w(config/database.yml config/textit_config.yml config/turn_api_config.yml)
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads}
 
 set :puma_rackup, -> { File.join(current_path, 'config.ru') }
