@@ -18,7 +18,8 @@ Rails.application.routes.draw do
   get 'res/high_risk_pregnancy/patient/list/', to: 'alerts/alerts#hcw_active_alerts'
   get 'res/high_risk_pregnancy/patient/details/', to: 'alerts/hcw_list_alerted_users#hcw_list_alerted_users'
 
-  post 'res/high_risk_pregnancy/hcw/patient/confirm-care/', to: 'alerts/alerts#hcw_confirm_care'
+  get 'res/health-alert/patient/list/', to: 'alerts/alerts#hcw_active_alerts'
+  get 'res/health-alert/patient/details/', to: 'alerts/alerts#patient_details'
 
   # post 'res/high_risk_pregnancy/hcw/patient/deny-care/', to: 'alerts/hcw_patient_care#deny'
 
