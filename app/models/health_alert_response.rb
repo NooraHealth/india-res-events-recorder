@@ -26,4 +26,18 @@ class HealthAlertResponse < ApplicationRecord
   belongs_to :health_alert_notification
   belongs_to :health_alert
   belongs_to :user
+
+  PATIENT_TYPE = "patient"
+  ASHA_TYPE = "asha"
+  ANM_TYPE = "anm"
+
+  VALID_USER_TYPES = [
+    PATIENT_TYPE,
+    ASHA_TYPE,
+    ANM_TYPE,
+  ]
+
+  validation_inclusion_of :user_type,
+                          in: VALID_USER_TYPES,
+                          message: "%{value} is not a valid user_type"
 end
