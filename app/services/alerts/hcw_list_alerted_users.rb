@@ -13,7 +13,10 @@ module Alerts
         @hcw_user = AshaUser.find_by_phone(phone)
       end
 
-      unless @hcw_user.can_see_patient_alerts
+      @user_ids = @hcw_user.get_patient_profiles.map { |x| x.user.id }
+
+      # TODO: use user names from here
+      if @user_ids.length == 0
         raise Forbidden.new("User doesn't qualify for listing alerts")
       end
 
@@ -45,12 +48,28 @@ module Alerts
         hcw_filter = {asha_user_id: @hcw_user.id}
       end
 
-      # TODO: the below 2 can be combined into 1 query (possibly raw?)
-      recent_alerts =
-        HealthAlert
-          .select('DISTINCT ON (user_id) id, created_at')
-          .order('user_id, created_at DESC')
-          .pluck(:id)
+      value = {
+        hcw_type: @hcw_user.class.name,
+        patient_names: [],
+      }
+
+      # TODO: recent_alerts and open_alerts can be combined
+      sql = <<-SQL
+        SELECT
+          DISTINCT ON (user_id) id,
+          created_at
+        FROM health_alerts
+        WHERE user_id = ANY(ARRAY[#{@user_ids.join(', ')}]::integer[])
+        ORDER BY user_id, created_at desc
+      SQL
+
+      recent_alerts = ActiveRecord::Base.connection.exec_query(
+        sql, "get_recent_alerts_given_user_ids"
+      ).rows.map { |x| x[0] }
+
+      if recent_alerts.length == 0
+        return value
+      end
 
       open_alerts =
         HealthAlert
@@ -59,6 +78,10 @@ module Alerts
             responses: { id: nil }, # no responses
             id: recent_alerts, # only check recent open alerts
           )
+
+      if open_alerts.length == 0
+        return value
+      end
 
       names =
         User
@@ -69,12 +92,13 @@ module Alerts
             rch_profile: hcw_filter,
           )
           .order("health_alerts.created_at ASC")
-          .pluck(:name)
+          .map { |x| x.name } # NOTE: pluck picks 2 values for some reason
 
-      return {
-               hcw_type: @hcw_user.class.name,
-               patient_names: names.each_with_index.map { |item, index| "#{index + 1}. #{item}" },
-             }
+      value[:patient_names] = names.each_with_index.map do |item, index|
+        "#{index + 1}. #{item}"
+      end
+
+      return value
 
     end
 
