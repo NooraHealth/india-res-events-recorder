@@ -33,15 +33,21 @@
 #  village             :text
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  anm_user_id         :bigint
+#  asha_user_id        :bigint
 #  rch_id              :string
 #  user_id             :bigint
 #
 # Indexes
 #
-#  index_rch_profiles_on_user_id  (user_id)
+#  index_rch_profiles_on_anm_user_id   (anm_user_id)
+#  index_rch_profiles_on_asha_user_id  (asha_user_id)
+#  index_rch_profiles_on_user_id       (user_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (anm_user_id => anm_users.id)
+#  fk_rails_...  (asha_user_id => asha_users.id)
 #  fk_rails_...  (user_id => users.id)
 #
 class RchProfile < ApplicationRecord

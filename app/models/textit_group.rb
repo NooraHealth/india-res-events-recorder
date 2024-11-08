@@ -6,6 +6,7 @@
 #  direct_entry         :boolean          default(FALSE)
 #  exotel_number        :string
 #  name                 :string
+#  user_type            :string           default("User")
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  condition_area_id    :integer

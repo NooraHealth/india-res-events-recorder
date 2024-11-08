@@ -23,6 +23,7 @@
 #  fk_rails_...  (condition_area_id => condition_areas.id)
 #  fk_rails_...  (language_id => languages.id)
 #  fk_rails_...  (program_id => noora_programs.id)
+#  fk_rails_...  (state_id => states.id)
 #
 class Exophone < ApplicationRecord
 

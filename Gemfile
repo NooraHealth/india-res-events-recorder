@@ -45,6 +45,13 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem "annotaterb"
   gem 'byebug'
+
+  gem "capistrano", require: false
+  gem 'capistrano3-puma'
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-sidekiq'
+  gem 'capistrano-rbenv'
 end
 
 group :development do

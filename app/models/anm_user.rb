@@ -4,13 +4,15 @@
 #
 # Table name: anm_users
 #
-#  id            :bigint           not null, primary key
-#  mobile_number :string
-#  name          :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  district_id   :bigint           not null
-#  state_id      :bigint           not null
+#  id                       :bigint           not null, primary key
+#  mobile_number            :string
+#  name                     :string
+#  signed_up_to_whatsapp    :boolean          default(FALSE)
+#  whatsapp_onboarding_date :datetime
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  district_id              :bigint           not null
+#  state_id                 :bigint           not null
 #
 # Indexes
 #

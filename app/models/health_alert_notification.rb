@@ -2,14 +2,15 @@
 #
 # Table name: health_alert_notifications
 #
-#  id              :bigint           not null, primary key
-#  event_timestamp :datetime
-#  platform        :string
-#  user_type       :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  health_alert_id :bigint           not null
-#  user_id         :bigint
+#  id                :bigint           not null, primary key
+#  event_timestamp   :datetime
+#  notification_type :string
+#  platform          :string
+#  user_type         :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  health_alert_id   :bigint           not null
+#  user_id           :bigint
 #
 # Indexes
 #

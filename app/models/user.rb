@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                             :bigint           not null, primary key
+#  alternate_mobile_number        :string
 #  baby_date_of_birth             :datetime
 #  calculated_onboarding_attempts :integer
 #  date_of_discharge              :datetime
