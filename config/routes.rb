@@ -10,15 +10,21 @@ Rails.application.routes.draw do
   post 'res/update_user_attribute', to: 'ccp_res/webhooks#update_user_attribute'
   post 'res/update_user_campaign', to: 'ccp_res/webhooks#update_user_campaign'
 
-  post 'res/health-alert/new/', to: 'alerts/create_alert#create_alert'
 
-  get 'res/health-alert/patient/list/', to: 'alerts/hcw_list_alerted_users#hcw_list_alerted_users'
-  get 'res/health-alert/patient/details/', to: 'alerts/hcw_list_alerted_users#hcw_list_alerted_users'
+  ############## HRP ENDPOINTS ##############
 
-  post 'res/health-alert/hcw/patient/confirm-care/', to: 'alerts/hcw_patient_care#confirm'
-  post 'res/health-alert/hcw/patient/deny-care/', to: 'alerts/hcw_patient_care#deny'
+  post 'res/high_risk_pregnancy/hrp/alert', to: 'alerts/alerts#create'
 
-  post 'res/health-alert/patient/confirm-care/', to: 'alerts/patient_care#confirm'
-  post 'res/health-alert/patient/deny-care/', to: 'alerts/patient_care#deny'
+  get 'res/high_risk_pregnancy/patient/list/', to: 'alerts/alerts#hcw_active_alerts'
+  get 'res/high_risk_pregnancy/patient/details/', to: 'alerts/hcw_list_alerted_users#hcw_list_alerted_users'
+
+  post 'res/high_risk_pregnancy/hcw/patient/confirm-care/', to: 'alerts/alerts#hcw_confirm_care'
+
+  # post 'res/high_risk_pregnancy/hcw/patient/deny-care/', to: 'alerts/hcw_patient_care#deny'
+
+  post 'res/high_risk_pregnancy/patient/confirm-care/', to: 'alerts/alerts#patient_confirm_care'
+  # post 'res/high_risk_pregnancy/patient/deny-care/', to: 'alerts/patient_care#deny'
+
+  ############## HRP ENDPOINTS ##############
 
 end
