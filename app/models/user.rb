@@ -83,7 +83,6 @@ class User < ApplicationRecord
   has_many :user_textit_group_mappings, dependent: :destroy
 
   has_one :rch_profile, dependent: :destroy
-  has_one :tb_profile, dependent: :destroy
 
   def self.find_by_phone(phone)
     return find_user_by_phone(User, phone, :in)
