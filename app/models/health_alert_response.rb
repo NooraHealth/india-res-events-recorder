@@ -37,7 +37,12 @@ class HealthAlertResponse < ApplicationRecord
     ANM_TYPE,
   ]
 
-  validation_inclusion_of :user_type,
-                          in: VALID_USER_TYPES,
-                          message: "%{value} is not a valid user_type"
+  validates_inclusion_of :user_type,
+                         in: VALID_USER_TYPES,
+                         message: "%{value} is not a valid user_type"
+
+  VALID_RESPONSES = ["YES", "NO"]
+  validates_inclusion_of :response,
+                          in: VALID_RESPONSES,
+                          message: "%{value} is not a valid response"
 end

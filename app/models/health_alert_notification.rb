@@ -24,6 +24,8 @@ class HealthAlertNotification < ApplicationRecord
   belongs_to :health_alert
   belongs_to :user, polymorphic: true
 
+  has_many :responses, class_name: "HealthAlertResponse"
+
   PATIENT_TYPE = "patient"
   ASHA_TYPE = "asha"
   ANM_TYPE = "anm"
@@ -40,5 +42,4 @@ class HealthAlertNotification < ApplicationRecord
                          in: VALID_USER_TYPES,
                          message: "%{value} is not a valid user_type"
 
-  has_many :responses, inverse_of: :health_alert_notification, class_name: "HealthAlertResponse"
 end
