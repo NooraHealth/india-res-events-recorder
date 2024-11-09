@@ -4,6 +4,7 @@
 #
 #  id                           :bigint           not null, primary key
 #  platform                     :string
+#  response                     :string           default("NO"), not null
 #  user_type                    :string           not null
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null

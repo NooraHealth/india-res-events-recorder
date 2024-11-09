@@ -12,6 +12,7 @@ module Alerts
       rescue UserNotFound
         @hcw_user = AshaUser.find_by_phone(phone)
       end
+      # TODO: do we need to check signup to whatsapp before starting the flow
 
       @user_ids = @hcw_user.get_patient_profiles.map { |x| x.user.id }
 

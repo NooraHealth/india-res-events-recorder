@@ -11,7 +11,7 @@
 #  whatsapp_onboarding_date :datetime
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
-#  district_id              :bigint           not null
+#  district_id              :bigint
 #  state_id                 :bigint           not null
 #
 # Indexes
